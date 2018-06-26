@@ -12,8 +12,8 @@ Usage
 Point help at https://apolitical.github.io/charts
 
 1. Clone this repository
-2. ToDo: Run `build.sh`, this will checkout the `gh-pages` branch into `/build` and update its contents
-3. ToDo: Push changes in `build/` directory
+2. Run `roll-charts.sh`, this will checkout the `gh-pages` branch into `/build` and update its contents
+3. Push changes in `build/` directory
 
 ToDo
 ----
