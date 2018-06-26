@@ -1,0 +1,13 @@
+apiVersion: v1
+entries:
+  articles-api:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2018-06-26T17:13:03.254054956+01:00
+    description: An api for querying wordpress database posts
+    digest: 05b465d978a9028faa02f814e35bed79ad33771d4ed9d1ae1b1f575938de67f3
+    name: articles-api
+    urls:
+    - articles-api-0.1.0.tgz
+    version: 0.1.0
+generated: 2018-06-26T17:13:03.253533284+01:00
