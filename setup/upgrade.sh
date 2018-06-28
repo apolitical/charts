@@ -15,4 +15,4 @@ if [ -z ${CONTEXT:+TEST_STRING} ]; then
 fi
 
 kubectl apply -f helm.rbac.yaml --context ${CONTEXT}
-helm init --kube-context ${CONTEXT} --service-account tiller
+helm init --kube-context ${CONTEXT} --service-account tiller --upgrade
