@@ -2,12 +2,32 @@ apiVersion: v1
 entries:
   articles-api:
   - apiVersion: v1
-    appVersion: "1.0"
-    created: 2018-06-26T17:13:03.254054956+01:00
+    appVersion: v0.2.1
+    created: 2018-07-24T17:23:08.527330888+01:00
     description: An api for querying wordpress database posts
-    digest: 05b465d978a9028faa02f814e35bed79ad33771d4ed9d1ae1b1f575938de67f3
+    digest: ef067e8ae9da2cb7c482408e46b19f0b848144c285c2235928280e930558170d
+    home: https://github.com/apolitical/articles-api
+    name: articles-api
+    urls:
+    - articles-api-0.2.1.tgz
+    version: 0.2.1
+  - apiVersion: v1
+    appVersion: v0.2.0
+    created: 2018-07-24T17:23:08.527070458+01:00
+    description: An api for querying wordpress database posts
+    digest: a0c18633d82b22506d08ce8ff22fc94aee3575730631d40bb38e9c8705530790
+    home: https://github.com/apolitical/articles-api
+    name: articles-api
+    urls:
+    - articles-api-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v1
+    appVersion: v0.1.0
+    created: 2018-07-24T17:23:08.526814131+01:00
+    description: An api for querying wordpress database posts
+    digest: 4c2f94ecfd25f859bef33830c1224e0c097e7e7f1ec90b86486c0cdd2ae237f2
     name: articles-api
     urls:
     - articles-api-0.1.0.tgz
     version: 0.1.0
-generated: 2018-06-26T17:13:03.253533284+01:00
+generated: 2018-07-24T17:23:08.526362073+01:00
