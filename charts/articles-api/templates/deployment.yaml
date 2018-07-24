@@ -1,0 +1,65 @@
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "chart.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ template "chart.name" . }}
+    name: {{ template "chart.fullname" . }}
+    chart: {{ template "chart.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      name: {{ template "chart.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "chart.name" . }}
+        name: {{ template "chart.fullname" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: sql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.11
+        command: [
+          "/cloud_sql_proxy",
+          "-instances={{ .Values.databaseInstance }}",
+          "-credential_file=/secrets/cloudsql/credentials.json"
+        ]
+        volumeMounts:
+          - name: wordpress-proxy-credentials
+            mountPath: /secrets/cloudsql
+            readOnly: true
+      - name: {{ .Chart.Name }}
+        image: {{ .Values.image.repository }}:{{ .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - name: http
+          containerPort: {{ .Values.service.port }}
+          protocol: TCP
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: database-url
+              key: DATABASE_URL
+        - name: CACHE_URL
+          value: {{ .Values.redisUrl }}
+        - name: RUST_LOG
+          value: {{ .Values.logLevel }}
+        livenessProbe:
+          httpGet:
+            path: /status
+            port: http
+        readinessProbe:
+          httpGet:
+            path: /status
+            port: http
+      volumes:
+      - name: wordpress-proxy-credentials
+        secret:
+          secretName: wordpress-proxy-credentials

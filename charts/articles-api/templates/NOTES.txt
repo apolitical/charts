@@ -1,0 +1,5 @@
+Service will shortly be available here:
+
+    https://apolitical.co{{ $.Values.ingress.path }}
+
+ToDo: Fix url for environment
