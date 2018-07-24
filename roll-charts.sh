@@ -82,7 +82,7 @@ echo
 (
     cd ${BUILD_DIR}
 
-    if [ `git status -s | grep -v index.yaml` ]; then
+    if [ ! -z "$(git status -s | grep -v index.yaml)" ]; then
         echo "Committing"
         git add .
         DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
