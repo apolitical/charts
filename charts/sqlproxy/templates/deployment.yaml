@@ -22,26 +22,36 @@ spec:
         release: {{ .Release.Name }}
     spec:
       containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: [
-            "/cloud_sql_proxy",
-            "-instances=hazel-tea-194609:europe-west1:wordpress-{{ .Values.context }}=tcp:0.0.0.0:3306",
-            "-credential_file=/secrets/cloudsql/credentials.json"
-          ]
-          ports:
-            - name: mysql
-              containerPort: 3306
-              protocol: TCP
-#          livenessProbe:
-#            exec:
-#              command: ["nc", "127.0.0.1", "3306"]
-#          readinessProbe:
-#            exec:
-#              command: ["nc", "127.0.0.1", "3306"]
-          resources:
-{{ toYaml .Values.resources | indent 12 }}
+      - name: {{ .Chart.Name }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: [
+          "/cloud_sql_proxy",
+          "-instances=hazel-tea-194609:europe-west1:wordpress-{{ .Values.context }}=tcp:0.0.0.0:3306",
+          "-credential_file=/secrets/cloudsql/credentials.json"
+        ]
+        ports:
+          - name: mysql
+            containerPort: 3306
+            protocol: TCP
+        livenessProbe:
+          exec:
+            command: ["nc", "-z", "127.0.0.1", "3306"]
+        readinessProbe:
+          exec:
+            command: ["nc", "-z", "127.0.0.1", "3306"]
+        volumeMounts:
+          - name: proxy-credentials
+            mountPath: /secrets/cloudsql
+            readOnly: true
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+      volumes:
+      - name: proxy-credentials
+        secret:
+          secretName: proxy-credentials
+      imagePullSecrets:
+      - name: regsecret
     {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}

@@ -4,6 +4,11 @@ kind: NetworkPolicy
 metadata:
   name: {{ template "sqlproxy.fullname" . }}
   namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ template "sqlproxy.name" . }}
+    chart: {{ template "sqlproxy.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
   podSelector:
     matchLabels:
