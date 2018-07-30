@@ -1,0 +1,62 @@
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "sqlproxy.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ template "sqlproxy.name" . }}
+    chart: {{ template "sqlproxy.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "sqlproxy.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "sqlproxy.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: [
+            "/cloud_sql_proxy",
+            "-instances=hazel-tea-194609:europe-west1:wordpress-{{ .Values.context }}=tcp:0.0.0.0:3306",
+            "-credential_file=/secrets/cloudsql/credentials.json"
+          ]
+          ports:
+            - name: mysql
+              containerPort: 3306
+              protocol: TCP
+#          livenessProbe:
+#            exec:
+#              command: ["nc", "127.0.0.1", "3306"]
+#          readinessProbe:
+#            exec:
+#              command: ["nc", "127.0.0.1", "3306"]
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+      volumes:
+      - name: proxy-credentials
+        secret:
+          secretName: proxy-credentials
+      imagePullSecrets:
+      - name: regsecret
