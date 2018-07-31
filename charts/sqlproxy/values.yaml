@@ -4,7 +4,6 @@
 
 replicaCount: 3
 namespace: engineering
-context: beta
 
 image:
   repository: gcr.io/cloudsql-docker/gce-proxy

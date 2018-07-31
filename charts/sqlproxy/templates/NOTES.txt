@@ -1,9 +1,9 @@
 
 IMPORTANT: The database you have attempted to connect to is
 
-    {{ .Values.context }}
+    {{ .Values.database }}
 
-If you meant to connect to another database please upgrade with "--set context=<context>"
+If you meant to connect to another database please upgrade with "--set database=<database>"
 
 You can now access the database using the following internal DNS name:
 
