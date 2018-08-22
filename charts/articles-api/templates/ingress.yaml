@@ -1,0 +1,25 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ template "chart.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ template "chart.name" . }}
+    name: {{ template "chart.fullname" . }}
+    chart: {{ template "chart.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+{{- with .Values.ingress.annotations }}
+  annotations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+spec:
+  rules:
+  - http:
+      paths:
+      - path: {{ .Values.ingress.path }}
+        backend:
+          serviceName: {{ template "chart.fullname" . }}
+          servicePort: {{ .Values.service.port }}
+
