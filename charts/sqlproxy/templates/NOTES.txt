@@ -1,0 +1,10 @@
+
+IMPORTANT: The database you have attempted to connect to is
+
+    {{ .Values.database }}
+
+If you meant to connect to another database please upgrade with "--set database=<database>"
+
+You can now access the database using the following internal DNS name:
+
+    {{ template "sqlproxy.fullname" . }}.{{ .Values.namespace }}.svc.cluster.local

@@ -1,0 +1,28 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ template "sqlproxy.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ template "sqlproxy.name" . }}
+    chart: {{ template "sqlproxy.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  podSelector:
+    matchLabels:
+      app: {{ template "sqlproxy.name" . }}
+  policyTypes:
+  - Ingress
+  ingress:
+  - ports:
+    - port: mysql
+      protocol: TCP
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          namespace: {{ .Values.namespace }}
+    - podSelector:
+        matchLabels:
+          db-access: "true"
