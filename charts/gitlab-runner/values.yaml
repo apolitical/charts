@@ -43,7 +43,7 @@ rbac:
 runners:
   ## Default container image to use for builds when none is specified
   ##
-  image: ubuntu:16.04
+  image: ubuntu:18.04
 
   ## Run all containers with the privileged flag enabled
   ## This will allow the docker:stable-dind image to run if you need to run Docker
